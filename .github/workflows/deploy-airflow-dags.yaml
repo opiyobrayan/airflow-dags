@@ -1,0 +1,37 @@
+name: Deploy Airflow DAGs
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'dags/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Airflow
+        run: pip install apache-airflow==3.1.0
+
+      - name: Validate DAGs
+        run: |
+          echo "Checking DAG syntax..."
+          airflow dags list || exit 1
+
+      - name: Deploy to Airflow Server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.AIRFLOW_HOST }}
+          username: ${{ secrets.AIRFLOW_USER }}
+          key: ${{ secrets.AIRFLOW_SSH_KEY }}
+          source: "dags/"
+          target: "/opt/airflow/dags"
