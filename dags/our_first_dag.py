@@ -37,7 +37,7 @@ def daily_etl_pipeline():
     def generate_fake_events():
         """Simulates pulling new event data and saving to CSV."""
         events = [
-            "Solar flare near Mars", "New AI model released", "Fusion milestone",
+            "Solar flare near Mars(opiman)", "New AI model released", "Fusion milestone",
             "Celestial event tonight", "Economic policy update", "Storm in Nairobi",
             "New particle at CERN", "NASA Moon base plan", "Tremors in Tokyo", "Open-source boom",
         ]
