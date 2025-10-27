@@ -26,9 +26,9 @@ jobs:
       - name: Restart Airflow Containers (optional)
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          host: ${{ secrets.AIRFLOW_HOST }}
+          username: ${{ secrets.AIRFLOW_USER }}
+          key: ${{ secrets.AIRFLOW_SSH_KEY }}
           script: |
             cd ~/Desktop/airflow-docker
             docker compose restart airflow-scheduler airflow-webserver
