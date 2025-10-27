@@ -17,9 +17,9 @@ jobs:
       - name: Copy DAGs to Local Airflow via SCP
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          host: ${{ secrets.AIRFLOW_HOST }}
+          username: ${{ secrets.AIRFLOW_USER }}
+          key: ${{ secrets.AIRFLOW_SSH_KEY }}
           source: "dags/"
           target: "/home/${{ secrets.DEPLOY_USER }}/Desktop/airflow-docker/dags"
 
