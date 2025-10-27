@@ -1,4 +1,4 @@
-name: Deploy Airflow DAGs
+name: Deploy Airflow DAGs (Local Docker)
 
 on:
   push:
@@ -14,24 +14,21 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Install Airflow
-        run: pip install apache-airflow==3.1.0
-
-      - name: Validate DAGs
-        run: |
-          echo "Checking DAG syntax..."
-          airflow dags list || exit 1
-
-      - name: Deploy to Airflow Server
+      - name: Copy DAGs to Local Airflow via SCP
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ secrets.AIRFLOW_HOST }}
-          username: ${{ secrets.AIRFLOW_USER }}
-          key: ${{ secrets.AIRFLOW_SSH_KEY }}
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
           source: "dags/"
-          target: "/opt/airflow/dags"
+          target: "/home/${{ secrets.DEPLOY_USER }}/Desktop/airflow-docker/dags"
+
+      - name: Restart Airflow Containers (optional)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd ~/Desktop/airflow-docker
+            docker compose restart airflow-scheduler airflow-webserver
