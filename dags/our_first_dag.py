@@ -51,7 +51,7 @@ def daily_etl_pipeline():
         df = pd.DataFrame(data)
         os.makedirs(output_dir, exist_ok=True)
         df.to_csv(raw_path, index=False)
-        print(f"[RAW] Saved to {raw_path}")
+        print(f"[RAW] Saved to {raw_path}(test from github)")
         return raw_path
 
     # --- T (Transform) ---
